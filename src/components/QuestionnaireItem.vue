@@ -1,53 +1,21 @@
 <template>
-  <div>
-    <h2>{{ item.text }}</h2>
+  <div v-for="item in items" :key="item.linkId">
+    <!-- Affichage du linkId et du text -->
+    <p>{{ item.linkId }}: {{ item.text }}</p>
 
-    <!-- Si l'item contient des sous-items, les afficher de manière récursive -->
-    <div v-if="item.item.length">
-      <div v-for="subItem in item.item" :key="subItem.linkId">
-        <QuestionnaireItem :item="subItem" />
-      </div>
-    </div>
-
-    <!-- Gérer différents types de champs de formulaire -->
-    <div v-else>
-      <template v-if="item.type === 'string'">
-        <label :for="item.linkId">{{ item.text }}</label>
-        <input type="text" v-model="answers[item.linkId]" :required="item.required" />
-      </template>
-
-      <template v-if="item.type === 'date'">
-        <label :for="item.linkId">{{ item.text }}</label>
-        <input type="date" v-model="answers[item.linkId]" :required="item.required" />
-      </template>
-
-      <template v-if="item.type === 'integer'">
-        <label :for="item.linkId">{{ item.text }}</label>
-        <input type="number" v-model="answers[item.linkId]" :required="item.required" />
-      </template>
-
-      <!-- Ajoute d'autres types de champs si nécessaire -->
-    </div>
+    <!-- Si l'item contient des sous-items, on les affiche aussi -->
+    <QuestionnaireItem v-if="item.item && item.item.length > 0" :items="item.item" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'QuestionnaireItem',
+  name: "QuestionnaireItem",
   props: {
-    item: {
-      type: Object,
+    items: {
+      type: Array,
       required: true
     }
-  },
-  data() {
-    return {
-      answers: {}
-    };
   }
 };
 </script>
-
-<style scoped>
-/* Ajoute du style si nécessaire */
-</style>

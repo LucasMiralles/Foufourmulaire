@@ -9,6 +9,7 @@
 
     const id = route.params.id;
     const thisQuestionnaire = ref(null);
+    let allText = ref([])
 
 
 
@@ -89,12 +90,12 @@ function getThisQuestionnaire() {
     method: "GET",
     headers: headers
   };
-  
+
   fetch(url + "Questionnaire/"+id, fetchOptions)
     .then(response => response.json())
     .then(dataJSON => {
       console.log(dataJSON);
-            
+
           const questionnaire = new QuestionnaireDTO(
             dataJSON.id,
             dataJSON.url,
@@ -111,9 +112,10 @@ function getThisQuestionnaire() {
             dataJSON.item
           );
           thisQuestionnaire.value = questionnaire;
-        
-      
-      console.log(thisQuestionnaire);
+          allText = getAllTexts(dataJSON)
+
+
+      console.log('Questionnaire Data:', JSON.stringify(questionnaire, null, 2));
     })
     .catch(error => console.log(error));
 }
@@ -121,11 +123,85 @@ function getThisQuestionnaire() {
 onMounted(() => {
   getThisQuestionnaire();
 });
+
+    function getAllTexts(json) {
+      let texts = [];
+
+      function findTexts(items) {
+        for (const item of items) {
+          if (item.text) {
+            texts.push(item.text);
+          }
+          if (item.item) {
+            findTexts(item.item);
+          }
+        }
+      }
+      findTexts(json.item);
+      return texts;
+    }
+
 </script>
 
 <template>
-    {{ id }}
+  <div class="container">
+    <h1 v-if="thisQuestionnaire">{{ thisQuestionnaire.title }}</h1>
+    <p v-if="thisQuestionnaire" class="description">{{ thisQuestionnaire.description }}</p>
+    <div v-if="allText.length > 0" class="text-list">
+      <p v-for="(text, index) in allText" :key="index">{{ text }}</p>
+    </div>
+  </div>
 </template>
 
 
+<style scoped>
+
+/* Conteneur principal */
+.container {
+  width: 100%; /* Largeur ajustable selon le besoin */
+  max-width: 1000px; /* Largeur maximale pour le conteneur */
+  margin: 0; /* Enlève la marge pour centrer le conteneur */
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-top: 80px; /* Garde la marge du haut si nécessaire */
+}
+
+/* Titre du questionnaire */
+h1 {
+  font-size: 24px;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* Description du questionnaire */
+.description {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Liste des textes */
+.text-list {
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px dashed #ccc;
+}
+
+.text-list p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Espacement des éléments */
+.text-list p {
+  margin-left: 20px;
+  color: #444;
+}
+
+</style>
 
