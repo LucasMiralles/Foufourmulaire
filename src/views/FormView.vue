@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import QuestionnaireItem from './QuestionnaireItem.vue';
+import QuestionnaireItem from '../components/QuestionnaireItem.vue';
 
 export default {
   name: 'FormView',
