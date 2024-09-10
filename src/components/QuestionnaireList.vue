@@ -192,8 +192,6 @@ onMounted(() => {
 
 <template>
   <!-- button to request questionnaire to server -->
-
-  <button @click="getAllQuestionnaire">Récupérer les questionnaires</button>
   <div class="card">
 
     <QuestionnaireCard
@@ -204,12 +202,11 @@ onMounted(() => {
     />
  </div> 
  
-
 </template>
 
 <style scoped>
 h2{
-  color: #004a6c;
+  color: #fff;
   text-align: center;
   font-family: Arial, sans-serif;
 }

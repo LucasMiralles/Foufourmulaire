@@ -1,25 +1,39 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import cardioImg from '@/assets/img/cardiologie.png';
+import neuroImg from '@/assets/img/cerveau.png';
+import ophthalmoImg from '@/assets/img/oeil.png';
+import dermatoImg from '@/assets/img/dermatologie.png';
+import pneumoImg from '@/assets/img/pneumologie.png';
+import gastroImg from '@/assets/img/gastro-enterologie.png';
+import hematoImg from '@/assets/img/hematologie.png';
+import rhumatoImg from '@/assets/img/rhumatologie.png';
+import orlImg from '@/assets/img/oreille.png';
 
 const props = defineProps(["questionnaire"]);
-
 const router = useRouter();
 
-/*const getServiceImage = (serviceName) => {
-  const imageMap = {
-    neurologie: '/img/cerveau.png',
-    cardiologie: '/img/cardilogie.png',
-    ophthalmologie: '/img/oeil.png',
-    dermatologie: '/img/.dermatologie.png',
-    pneumologie: '/img/pneumologie.png',
-    gastrologie: '/img/gastro-enterologie.png',
-    hematologie: '/img/hematologie.png',
-    rhumatologie: '/img/rhumatologie.png',
-    orl: '/img/oreille.png',
-  };
+const imageMap = {
+  cardio: cardioImg,
+  neuro: neuroImg,
+  ophthalmo: ophthalmoImg,
+  dermato: dermatoImg,
+  pneumo: pneumoImg,
+  gastro: gastroImg,
+  hemato: hematoImg,
+  rhumato: rhumatoImg,
+  orl: orlImg,
+};
 
-  return imageMap[serviceName.toLowerCase()] || '/img/annuler.png';
-};*/
+const getServiceImage = (title) => {
+  const lowerTitle = title.toLowerCase();
+  for (const key in imageMap) {
+    if (lowerTitle.includes(key)) {
+      return imageMap[key];
+    }
+  }
+  return '/img/default.png';
+};
 
 const handleCardClick = () => {
   router.push({ name: 'FormView', params: { id: props.questionnaire.id } });
@@ -27,11 +41,10 @@ const handleCardClick = () => {
 </script>
 
 <template>
-      <div class="card" @click="handleCardClick">
-        <!-- <img :src="getServiceImage(permission.element)" alt="Service image" class="service-image" /> -->
-        <p>{{ questionnaire.name }}</p>
+  <div class="card" @click="handleCardClick">
+    <img :src="getServiceImage(questionnaire.title)" alt="Service image" class="service-image" />
+    <p class="card-title">{{ questionnaire.title }}</p>
   </div>
-  
 </template>
 
 <style scoped>
@@ -40,33 +53,41 @@ const handleCardClick = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f5f5f5;
+  background-color: #3A5199;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 30px;
   padding: 20px;
-  width: 150px;
-  height: 200px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  width: 250px;
+  height: 250px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .card:hover {
   transform: scale(1.05);
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 300;
+  text-align: center;
+  margin: 0;
+  max-width: 90%;
+  overflow-wrap: break-word;
 }
 
 .service-image {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-p {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
+  margin-top: 70px;
 }
 </style>
