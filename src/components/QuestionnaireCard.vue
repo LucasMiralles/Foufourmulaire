@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
-defineProps(["questionnaire"]);
+const props = defineProps(["questionnaire"]);
 
 const router = useRouter();
 
@@ -22,7 +22,7 @@ const router = useRouter();
 };*/
 
 const handleCardClick = () => {
-  router.push({ name: '/questionnaire', params: { id: questionnaire.id } });
+  router.push({ name: 'FormView', params: { id: props.questionnaire.id } });
 };
 </script>
 
