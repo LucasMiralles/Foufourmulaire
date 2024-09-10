@@ -25,8 +25,8 @@ const imageMap = {
   orl: orlImg,
 };
 
-const getServiceImage = (title) => {
-  const lowerTitle = title.toLowerCase();
+const getServiceImage = (name) => {
+  const lowerTitle = name.toLowerCase();
   for (const key in imageMap) {
     if (lowerTitle.includes(key)) {
       return imageMap[key];
@@ -42,8 +42,8 @@ const handleCardClick = () => {
 
 <template>
   <div class="card" @click="handleCardClick">
-    <img :src="getServiceImage(questionnaire.title)" alt="Service image" class="service-image" />
-    <p class="card-title">{{ questionnaire.title }}</p>
+    <img :src="getServiceImage(questionnaire.name)" alt="Service image" class="service-image" />
+    <p class="card-title">{{ questionnaire.name }}</p>
   </div>
 </template>
 
