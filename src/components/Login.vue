@@ -15,6 +15,8 @@ let errorMessage = ref("");
 * */
 function askForJWT(id, birthdate){
     console.log(id, birthdate)
+    let iHaveJwt = false;
+
     
 
    const fetchOptions = {
@@ -24,11 +26,11 @@ function askForJWT(id, birthdate){
         }
    };
    // find the patient with the id and the birthdate
-   url = url + "/Patient?identifier=" + id + "&birthdate=" + birthdate;
-   fetch(url, fetchOptions)
+   fetch(url + "/Patient/" + id, fetchOptions)
        .then((response) => {
          console.log(response)
          if(response.status === 200){ // if the response is 200, we set iHaveJwt to true
+
            iHaveJwt = true;
          }else {
            errorMessage.value = "An error occurred ";
