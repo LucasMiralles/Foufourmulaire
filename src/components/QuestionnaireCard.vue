@@ -1,26 +1,71 @@
 <script setup>
-import {ref} from "vue";
+import { useRouter } from 'vue-router';
 
 defineProps(["permission"]);
-const emit = defineEmits(["change"]);
-//const checked = ref(permission.value);
+
+const router = useRouter();
+
+const getServiceImage = (serviceName) => {
+  const imageMap = {
+    neurologie: '/img/cerveau.png',
+    cardiologie: '/img/cardilogie.png',
+    ophthalmologie: '/img/oeil.png',
+    dermatologie: '/img/.dermatologie.png',
+    pneumologie: '/img/pneumologie.png',
+    gastrologie: '/img/gastro-enterologie.png',
+    hematologie: '/img/hematologie.png',
+    rhumatologie: '/img/rhumatologie.png',
+    orl: '/img/oreille.png',
+  };
+
+  return imageMap[serviceName.toLowerCase()] || '/img/annuler.png';
+};
+
+const handleCardClick = () => {
+  router.push({ name: 'QuestionnairePage' });
+};
 </script>
 
 <template>
-  <div class="permission">
+  <div class="card" @click="handleCardClick">
+    <img :src="getServiceImage(permission.element)" alt="Service image" class="service-image" />
     <p>{{ permission.element }}</p>
-    <input type="checkbox" id="permission.id" v-model="permission.value" @click="$emit('change', permission)">
   </div>
 </template>
 
 <style scoped>
-.permission {
+.card {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 5px;
-  width: 100%;
-  height: 100%;
-  color: black;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 150px;
+  height: 200px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.service-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
 }
 </style>
