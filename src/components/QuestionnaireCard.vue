@@ -19,11 +19,11 @@ const router = useRouter();
   };
 
   return imageMap[serviceName.toLowerCase()] || '/img/annuler.png';
-};
+};*/
 
 const handleCardClick = () => {
-  router.push({ name: 'QuestionnairePage' });
-};*/
+  router.push({ name: '/questionnaire', params: { id: questionnaire.id } });
+};
 </script>
 
 <template>
