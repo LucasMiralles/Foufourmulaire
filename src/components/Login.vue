@@ -14,17 +14,22 @@ let errorMessage = ref("");
 *
 * */
 function askForJWT(id, birthdate){
-    console.log(id, birthdate)
-    
 
+  localStorage.setItem("jwt", "connected")
+  router.push("/")
+
+  
+    console.log(id, birthdate)
    const fetchOptions = {
      method: "GET",
-        headers: {
-        "Content-Type": "application/json",
-        }
+     headers: {
+      "Content-Type": "application/json",
+    }
    };
    // find the patient with the id and the birthdate
-   url = url + "/Patient?identifier=" + id + "&birthdate=" + birthdate;
+   url = url + "/Patient/"+id;
+   let iHaveJwt =false;
+
    fetch(url, fetchOptions)
        .then((response) => {
          console.log(response)
@@ -41,8 +46,9 @@ function askForJWT(id, birthdate){
          console.log(dataJSON);
          //console.log(iHaveJwt) //debug
          if(iHaveJwt){ // if the response is 200, we store the jwt in the local storage
-           localStorage.setItem('jwt', dataJSON.access_token);
-           console.log(localStorage.getItem('jwt'));
+          //log the id, name and generalPractionner get from dataJSOn
+          console.log(dataJSON.id, dataJSON.generalPractitioner[0].reference) 
+          localStorage.setItem('patient id', dataJSON.id);
 
          }else{ // if the response is not 200, we display the error message
            errorMessage.value = "An error occurred: " + dataJSON.error;
