@@ -13,6 +13,8 @@ let errorMessage = ref("");
 * @param clientSecret: the client secret of the user
 *
 * */
+
+//Ceci est un commentaire du cum master
 function askForJWT(id, birthdate){
 
   localStorage.setItem("jwt", "connected")
