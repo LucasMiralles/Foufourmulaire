@@ -1,6 +1,7 @@
 <script setup>
 
 import MyHeader from "@/components/myHeader.vue";
+import QuestionnaireList from "../components/QuestionnaireList.vue";
 
 function logout() {
   localStorage.removeItem('jwt');
@@ -10,7 +11,7 @@ function logout() {
 <template>
   <div class="all">
     <my-header />
-
+    <QuestionnaireList />
     Les FouFourmulaires
   </div>
 

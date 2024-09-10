@@ -1,11 +1,11 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
-defineProps(["permission"]);
+defineProps(["questionnaire"]);
 
 const router = useRouter();
 
-const getServiceImage = (serviceName) => {
+/*const getServiceImage = (serviceName) => {
   const imageMap = {
     neurologie: '/img/cerveau.png',
     cardiologie: '/img/cardilogie.png',
@@ -19,18 +19,19 @@ const getServiceImage = (serviceName) => {
   };
 
   return imageMap[serviceName.toLowerCase()] || '/img/annuler.png';
-};
+};*/
 
 const handleCardClick = () => {
-  router.push({ name: 'QuestionnairePage' });
+  router.push({ name: '/questionnaire', params: { id: questionnaire.id } });
 };
 </script>
 
 <template>
-  <div class="card" @click="handleCardClick">
-    <img :src="getServiceImage(permission.element)" alt="Service image" class="service-image" />
-    <p>{{ permission.element }}</p>
+      <div class="card" @click="handleCardClick">
+        <!-- <img :src="getServiceImage(permission.element)" alt="Service image" class="service-image" /> -->
+        <p>{{ questionnaire.name }}</p>
   </div>
+  
 </template>
 
 <style scoped>
