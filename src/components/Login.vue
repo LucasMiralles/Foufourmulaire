@@ -13,17 +13,16 @@ let errorMessage = ref("");
 * @param clientSecret: the client secret of the user
 *
 * */
-function askForJWT(id, birthdate){
-    console.log(id, birthdate)
-    let iHaveJwt = false;
-
+// function askForJWT(id, birthdate){
+//     localStorage.setItem("jwt", "connected")
+//     router.push("/")
     
 
-//Ceci est un commentaire du cum master
 function askForJWT(id, birthdate){
+  console.log(id, birthdate)
+  let iHaveResponse = false;
 
-  localStorage.setItem("jwt", "connected")
-  router.push("/")
+
 
   
     console.log(id, birthdate)
@@ -34,12 +33,12 @@ function askForJWT(id, birthdate){
     }
    };
    // find the patient with the id and the birthdate
-   fetch(url + "/Patient/" + id, fetchOptions)
+   fetch(url + "patient/" + id, fetchOptions)
        .then((response) => {
          console.log(response)
          if(response.status === 200){ // if the response is 200, we set iHaveJwt to true
 
-           iHaveJwt = true;
+           iHaveResponse = true;
          }else {
            errorMessage.value = "An error occurred ";
 
@@ -50,15 +49,17 @@ function askForJWT(id, birthdate){
        .then((dataJSON) => {
          console.log(dataJSON);
          //console.log(iHaveJwt) //debug
-         if(iHaveJwt){ // if the response is 200, we store the jwt in the local storage
+         if(iHaveResponse){ // if the response is 200, we store the jwt in the local storage
           //log the id, name and generalPractionner get from dataJSOn
           console.log(dataJSON.id, dataJSON.generalPractitioner[0].reference) 
-          localStorage.setItem('patient id', dataJSON.id);
+          localStorage.setItem('patientId', dataJSON.id);
+          localStorage.setItem('generalPractitioner', dataJSON.generalPractitioner[0].reference)
+          router.push("/")
 
          }else{ // if the response is not 200, we display the error message
            errorMessage.value = "An error occurred: " + dataJSON.error;
          }
-         if(localStorage.getItem('jwt')){ // if the jwt is stored in the local storage, we redirect to the home page
+         if(localStorage.getItem('patientId')){ // if the jwt is stored in the local storage, we redirect to the home page
            router.push("/")
          }
 

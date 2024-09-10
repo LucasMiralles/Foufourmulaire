@@ -24,7 +24,7 @@ export default router
 router.beforeEach((to, from, next) => {
     const publicPages = ['/login'];
     const authRequired = !publicPages.includes(to.path);
-    const loggedIn = localStorage.getItem('jwt');
+    const loggedIn = localStorage.getItem('patientId');
 
     // trying to access a restricted page + not logged in
     // redirect to login page
