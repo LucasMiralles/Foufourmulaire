@@ -2,7 +2,8 @@
 import router from "@/router/router.js";
 
 function logout() {
-  localStorage.removeItem('jwt');
+  localStorage.removeItem('patientId');
+  localStorage.removeItem('generalPractitioner');
   //refresh the page
   router.go();
 }
