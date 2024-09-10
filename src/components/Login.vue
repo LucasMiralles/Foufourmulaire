@@ -75,9 +75,6 @@ const submitForm = () => {
 </script>
 
 <template>
-  <!--
-  Form to ask the cliend id and secre id of the user in order to use function askForJWT passing the client id and secret id
-  -->
   <div class="container">
     <h2>Authentification</h2>
     <form @submit.prevent="submitForm">
@@ -98,58 +95,135 @@ const submitForm = () => {
 </template>
 
 <style scoped>
-form{
+form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-.container {
-
-  border-radius: 20px;
-  background-color: white;
-  box-shadow: 0px 0px 10px black;
-  display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 100%;
-  color: black;
-  padding: 25px;
+}
 
+
+.container {
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 600px;
+  height: 350px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
+
+h2 {
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+}
+
 .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  width: 100%;
 }
+
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2a3e6f;
+  text-align: left;
+  width: 100%;
 }
+
 input[type="text"],
 input[type="password"] {
-
   width: 100%;
-  padding: 10px 15px;
-  width: 450px;
+  padding: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #2a3e6f;
+  background-color: #f9f9f9;
+  box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #3A5199;
+  background-color: #fff;
+  box-shadow: 0px 0px 8px rgba(58, 81, 153, 0.3);
+  outline: none;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+
 button {
-  padding: 10px 20px;
-  background-color: #007bff;
+  padding: 12px 20px;
+  background-color: #3A5199;
   color: #fff;
+  font-size: 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  outline: none;
+  font-weight: bold;
 }
+
 button:hover {
-  background-color: #0056b3;
+  background-color: #2a3e6f;
+  transform: translateY(-2px);
 }
+
+button:active {
+  background-color: #1d2a4a;
+  transform: translateY(1px);
+}
+
+button:focus {
+  outline: 2px solid #3A5199;
+  outline-offset: 2px;
+}
+
 .error {
-  background-color: #c71b1b;
-  border-radius: 5px;
-  border: red 1px solid;
-  color: white;
-  padding: 10px;
+  background-color: #f8d7da;
+  border-left: 5px solid #dc3545;
+  border-radius: 8px;
+  color: #721c24;
+  padding: 10px 15px;
   margin: 10px 0;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error::before {
+  content: '⚠️'; 
+  font-size: 18px;
+  margin-right: 8px;
 }
 </style>

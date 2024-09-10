@@ -12,55 +12,86 @@ function logout() {
 <template>
   <div class="top-bar">
     <div class="logo-container">
-      <img src="../assets/logo.svg" alt="logo" class="logo">
+      <img src="../assets/img/logoCrazy.png" alt="logo" class="logo">
     </div>
-    <div class="text">
+    <div class="center-container">
       <h1 class="title">Les Foufous de Sochaux</h1>
-      <button class= "logout" @click="logout">Logout</button>
-
     </div>
-
+    <button class="logout" @click="logout">Déconnexion</button>
   </div>
 </template>
 
 <style scoped>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 .top-bar {
-  /* border: red 1px solid; */
   position: fixed;
-  top: 0; /* Positionne la barre au sommet de la fenêtre */
-  left: 0; /* Ajuste la position de la barre sur la gauche */
-  width: 100%; /* La barre prendra toute la largeur de l'écran */
-  background-color: #3e4449; /* Couleur de fond de la barre */
-  color: #004a6c; /* Couleur du texte */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #3A5199;
+  color: #004a6c;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Ombre portée */
-  height: 6vh;
-  margin-bottom: 6vh;
-  background-color:rgba(255, 255, 255, 0.8);
+  align-items: center; 
+  padding: 15px 30px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  height: 10vh;   margin-bottom: 10vh; 
 }
 
 .logo-container {
-  width: 150px; /* Ajustez la largeur du conteneur du logo */
-}
-.logo {
-  width: 7vw; /* Utilisation de 10% de la largeur de la fenêtre */
-  height: auto; /* Hauteur automatique pour maintenir les proportions du logo */
+  display: flex;
+  align-items: center;
+  width: 100px;
 }
 
+.logo {
+  width: 5vw;
+  height: auto;
+}
+
+.center-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
 
 .title {
-  margin-right: 5em;
-  font-size: 1.5vw; /* Ajustez la taille du titre */
-  font-weight: bold; /* Texte en gras */
-}
-.text{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  font-size: 2vw;
+  font-weight: bold;
+  text-align: center; 
+  color: #ffffff; 
+  font-family: 'Ppoppins', sans-serif; 
+  letter-spacing: 0.01em; 
 }
 
+.logout {
+  padding: 12px 20px;
+  background-color: #ff5722;
+  color: white; 
+  font-size: 12px;
+  border: none; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  outline: none;
+  font-weight: bold;
+}
 
+.logout:hover {
+  background-color: #e64a19;
+  transform: translateY(-2px);
+}
+
+.logout:active {
+  background-color: #d84315;
+  transform: translateY(1px);
+}
+
+.logout:focus {
+  outline: 2px solid #ff5722;
+  outline-offset: 2px;
+}
 </style>
