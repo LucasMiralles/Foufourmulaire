@@ -16,7 +16,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 *,
@@ -33,13 +33,15 @@ html, body {
   width: 100vw;
   height: 100vh;
   position: relative;
+  overflow: hidden;
+  left: -120px;
 }
 
 .login::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  left: 0px;
   width: 100%;
   height: 100%;
   background-image: url('@/assets/img/image_de_fond.jpg');

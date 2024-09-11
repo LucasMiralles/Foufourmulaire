@@ -15,10 +15,6 @@ function logout() {
     Les FouFourmulaires
   </div>
 
-
-
-
-
 </template>
 
 <style scoped>

@@ -23,7 +23,7 @@ function logout() {
 
 <style scoped>
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster:wght@400;600&display=swap');
 
 .top-bar {
   position: fixed;
@@ -62,7 +62,7 @@ function logout() {
   font-weight: bold;
   text-align: center; 
   color: #ffffff; 
-  font-family: 'Ppoppins', sans-serif; 
+  font-family: 'Lobster', sans-serif; 
   letter-spacing: 0.01em; 
 }
 

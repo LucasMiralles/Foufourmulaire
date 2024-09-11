@@ -88,6 +88,6 @@ const handleCardClick = () => {
   width: 120px;
   height: 120px;
   object-fit: cover;
-  margin-top: 70px;
+  margin-top: 30px;
 }
 </style>

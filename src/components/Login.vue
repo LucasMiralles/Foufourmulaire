@@ -22,9 +22,6 @@ function askForJWT(id, birthdate){
   console.log(id, birthdate)
   let iHaveResponse = false;
 
-
-
-  
     console.log(id, birthdate)
    const fetchOptions = {
      method: "GET",
@@ -79,18 +76,16 @@ const submitForm = () => {
     <h2>Authentification</h2>
     <form @submit.prevent="submitForm">
       <div class="form-group">
-        <label for="id">Client ID:</label>
+        <label for="id">Identifiant Patient:</label>
         <input type="text" id="id" v-model="id" required>
       </div>
       <div class="form-group">
-        <label for="secretId">Secret ID:</label>
+        <label for="secretId">Date de naissance (AAAAMMJJ):</label>
         <input type="text" id="birthdate" v-model="birthdate" required>
       </div>
       <button type="submit">Se connecter</button>
     </form>
     <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-
-
   </div>
 </template>
 
@@ -102,7 +97,6 @@ form {
   align-items: center;
   width: 100%;
 }
-
 
 .container {
   border-radius: 20px;
