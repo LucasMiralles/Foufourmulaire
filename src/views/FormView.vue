@@ -1,18 +1,15 @@
 <script setup>
-    //defineProps(["questionnaire"]);
-    import { useRoute } from 'vue-router';
-    import { ref, onMounted } from 'vue';
-    import {url, urlToken, audience} from "../api.js"
+import { useRoute } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { url } from "../api.js";
 
-    const route = useRoute();
+const route = useRoute();
+const id = route.params.id;
+const thisQuestionnaire = ref(null);
+const allTexts = ref([]);
+const answers = ref({});  // Réponses de l'utilisateur
 
-    const id = route.params.id;
-    const thisQuestionnaire = ref(null);
-    let allText = ref([])
-
-
-
-    class QuestionnaireItemDTO {
+class QuestionnaireItemDTO {
   constructor(linkId, text, type, item, enableWhen, enableBehavior, disabledDisplay, required, repeats, readOnly, maxLength, answerConstraint, answerValueSet, answerOption, initial) {
     this.linkId = linkId;
     this.text = text;
@@ -90,117 +87,136 @@ function getThisQuestionnaire() {
     headers: headers
   };
 
-  fetch(url + "Questionnaire/"+id, fetchOptions)
+  fetch(`${url}Questionnaire/${id}`, fetchOptions)
     .then(response => response.json())
     .then(dataJSON => {
-      console.log(dataJSON);
-
-          const questionnaire = new QuestionnaireDTO(
-            dataJSON.id,
-            dataJSON.url,
-            dataJSON.identifier,
-            dataJSON.version,
-            dataJSON.name,
-            dataJSON.title,
-            dataJSON.status,
-            dataJSON.date,
-            dataJSON.publisher,
-            dataJSON.description,
-            dataJSON.purpose,
-            dataJSON.subjectType,
-            dataJSON.item
-          );
-          thisQuestionnaire.value = questionnaire;
-          allText = getAllTexts(dataJSON)
-
-
-      console.log('Questionnaire Data:', JSON.stringify(questionnaire, null, 2));
+      const questionnaire = new QuestionnaireDTO(
+        dataJSON.id,
+        dataJSON.url,
+        dataJSON.identifier,
+        dataJSON.version,
+        dataJSON.name,
+        dataJSON.title,
+        dataJSON.status,
+        dataJSON.date,
+        dataJSON.publisher,
+        dataJSON.description,
+        dataJSON.purpose,
+        dataJSON.subjectType,
+        dataJSON.item
+      );
+      thisQuestionnaire.value = questionnaire;
+      allTexts.value = getAllTexts(dataJSON);
+      initializeAnswers(dataJSON.item);
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log('Erreur lors de la récupération du questionnaire:', error));
+}
+
+function getAllTexts(json) {
+  let texts = [];
+
+  function findTexts(items) {
+    for (const item of items) {
+      if (item.text) {
+        texts.push({ linkId: item.linkId, text: item.text, type: item.type });
+      }
+      if (item.item) {
+        findTexts(item.item);
+      }
+    }
+  }
+  findTexts(json.item);
+  return texts;
+}
+
+function initializeAnswers(items) {
+  items.forEach(item => {
+    if (item.item) {
+      initializeAnswers(item.item);
+    }
+    answers.value[item.linkId] = ''; // Initialiser chaque réponse vide
+  });
+}
+
+function submitAnswers() {
+  const questionnaireResponse = 
+  {
+    "resourceType": "QuestionnaireResponse",
+    "id": `response-${id}-`+ localStorage.getItem('patientId'),
+    "questionnaire": "Questionnaire/"+id,
+    "status": "in-progress",
+    "subject": {
+      "reference": "Patient/"+ localStorage.getItem('patientId'),
+      "display": localStorage.getItem('name')
+    },
+    "authored": new Date().toISOString().split('T')[0], //format YYYY-MM-DD 
+
+    "author": {
+      "reference": localStorage.getItem('generalPractitioner'),
+      "display": "Dr"
+    },
+    "item": mapAnswersToItems(thisQuestionnaire.value.item)
+  };
+  console.log('Réponse à envoyer:', questionnaireResponse);
+  console.log(JSON.stringify(questionnaireResponse))
+
+  fetch(url+"questionnaire-response/"+questionnaireResponse.id, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(questionnaireResponse)
+  })
+  .then(response => response.json())
+  .then(data => console.log('Réponse soumise:', data))
+  .catch(error => console.error('Erreur lors de l\'envoi de la réponse:', error));
+}
+
+function mapAnswersToItems(items) {
+  return items.map(item => ({
+    linkId: item.linkId,
+    text: item.text,
+    item: item.item ? mapAnswersToItems(item.item) : undefined,
+    answer: answers.value[item.linkId] ? [{ valueString: answers.value[item.linkId] }] : []
+  }));
+}
+
+function getInputType(type) {
+  // Détermine le type d'input en fonction du type de question
+  switch (type) {
+    case 'date':
+      return 'date';
+    case 'integer':
+      return 'number';
+    case 'string':
+    default:
+      return 'text';
+  }
 }
 
 onMounted(() => {
   getThisQuestionnaire();
 });
-
-    function getAllTexts(json) {
-      let texts = [];
-
-      function findTexts(items) {
-        for (const item of items) {
-          if (item.text) {
-            texts.push(item.text);
-          }
-          if (item.item) {
-            findTexts(item.item);
-          }
-        }
-      }
-      findTexts(json.item);
-      return texts;
-    }
-
 </script>
 
 <template>
   <div class="container">
     <h1 v-if="thisQuestionnaire">{{ thisQuestionnaire.title }}</h1>
     <p v-if="thisQuestionnaire" class="description">{{ thisQuestionnaire.description }}</p>
-    <div v-if="allText.length > 0" class="text-list">
-      <p v-for="(text, index) in allText" :key="index">{{ text }}</p>
-    </div>
+    <form @submit.prevent="submitAnswers">
+      <div v-if="allTexts.length > 0" class="text-list">
+        <div v-for="item in allTexts" :key="item.linkId" class="question">
+          <p>{{ item.text }}</p>
+          <input v-model="answers[item.linkId]" :type="getInputType(item.type)" />
+        </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
   </div>
 </template>
 
-
 <style scoped>
-
-/* Conteneur principal */
-.container {
-  width: 100%; /* Largeur ajustable selon le besoin */
-  max-width: 1000px; /* Largeur maximale pour le conteneur */
-  margin: 0; /* Enlève la marge pour centrer le conteneur */
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  margin-top: 80px; /* Garde la marge du haut si nécessaire */
-}
-
-/* Titre du questionnaire */
-h1 {
-  font-size: 24px;
-  color: #333;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 10px;
+.question {
   margin-bottom: 20px;
 }
-
-/* Description du questionnaire */
-.description {
-  font-size: 18px;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-/* Liste des textes */
-.text-list {
-  margin-top: 20px;
-  padding: 10px;
-  border-top: 1px dashed #ccc;
-}
-
-.text-list p {
-  margin: 5px 0;
-  font-size: 16px;
-  color: #666;
-}
-
-/* Espacement des éléments */
-.text-list p {
-  margin-left: 20px;
-  color: #444;
-}
-
 </style>
-

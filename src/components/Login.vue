@@ -51,6 +51,7 @@ function askForJWT(id, birthdate){
           console.log(dataJSON.id, dataJSON.generalPractitioner[0].reference) 
           localStorage.setItem('patientId', dataJSON.id);
           localStorage.setItem('generalPractitioner', dataJSON.generalPractitioner[0].reference)
+          localStorage.setItem('name', dataJSON.name[0].given[0] + " " + dataJSON.name[0].family)
           router.push("/")
 
          }else{ // if the response is not 200, we display the error message
