@@ -5,14 +5,8 @@ import QuestionnaireResponseCard from "@/components/QuestionnaireResponseCard.vu
 
 // const props = defineProps(["consumer", "useCase", "delete"]);
 
-
 const waitingQuestionnaireResponse = reactive([]);
 const completedQuestionnaireResponse = reactive([]);
-
-
-
-
-
 
 function getAllQuestionnaire() {
   const headers = new Headers();
@@ -29,7 +23,6 @@ function getAllQuestionnaire() {
       })
     .then(dataJSON => {
       console.log(dataJSON);
-      // get element name of questionnaire and status and subject.reference from dataJSON if status is completed add it to completedQuestionnaireResponse else add it to waitingQuestionnaireResponse and if subject is equal to equal localStorage.getItem('patientId')
       dataJSON.forEach(element => {
         const elementName = element.questionnaire;
         const status = element.status;
@@ -66,90 +59,56 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- button to request questionnaire to server -->
-  <div class="allList">
-    <p>Questionnaires en attente de validation</p>
-
-    <div class="oneList">
-      <div class="card">
-        <QuestionnaireResponseCard
-          v-for="questionnaire in waitingQuestionnaireResponse"
-          :key="questionnaire.element"
-          :name="questionnaire.element"
-          :date="questionnaire.date"
-        />
-      </div>
+  <div class="fixed-container">
+    <h2 class="container-title">Questionnaires en attente de validation</h2>
+    <div class="card-container">
+      <QuestionnaireResponseCard
+        v-for="questionnaire in waitingQuestionnaireResponse"
+        :key="questionnaire.element"
+        :name="questionnaire.element"
+        :date="questionnaire.date"
+      />
     </div>
-      <p>Questionnaires validés</p>
-      <div class="oneList">
-        <QuestionnaireResponseCard
-          v-for="questionnaire in completedQuestionnaireResponse"
-          :key="questionnaire.element"
-          :name="questionnaire.element"
-          :date="questionnaire.date"
-        />
-      </div>
-    </div> 
- 
+
+    <h2 class="container-title">Questionnaires validés</h2>
+    <div class="card-container">
+      <QuestionnaireResponseCard
+        v-for="questionnaire in completedQuestionnaireResponse"
+        :key="questionnaire.element"
+        :name="questionnaire.element"
+        :date="questionnaire.date"
+      />
+    </div>
+  </div>
 </template>
 
 <style scoped>
-h2{
-  color: #fff;
-  text-align: center;
-  font-family: Arial, sans-serif;
-}
-.allList{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-
-}
-.oneList{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  
-}
-
-.deleteButton{
-  background-color: #ad2323;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-.deleteButton:hover{
-  background-color: #ff0000;
-}
-
-.sendButton{
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-.sendButton:hover{
-  background-color: #0056b3;
-}
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(111, 191, 77, 0.8);
-  border: 1px solid #5fa641;
+.fixed-container {
+  position: relative; 
+  margin-top: 20px;
+  left: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8); 
+  border: 2px solid #ccc; 
   padding: 20px;
-  z-index: 9999;
+  box-sizing: border-box;
+  overflow-y: auto; 
+  max-height: 80vh; 
 }
 
-.popup-content {
-  position: relative;
+.container-title {
+  text-align: center;
+  font-size: 1.5rem; 
+  color: #333; 
+  margin: 0 0 20px 0; 
+  font-weight: bold; 
+  padding-bottom: 10px; 
+  border-bottom: 2px solid #ddd; 
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 </style>

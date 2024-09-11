@@ -42,7 +42,7 @@ const getServiceImage = (name) => {
   <div class="card">
     <img :src="getServiceImage(props.name)" alt="Service image" class="service-image" />
     <p class="card-title">{{ props.name }}</p>
-    <p>Répondu le : {{ props.date }}</p>
+    <p class="response-date">Répondu le : {{ props.date }}</p>
   </div>
 </template>
 
@@ -88,5 +88,10 @@ const getServiceImage = (name) => {
   height: 120px;
   object-fit: cover;
   margin-top: 30px;
+}
+
+.response-date {
+  color: white;
+  margin-top: 25px;
 }
 </style>

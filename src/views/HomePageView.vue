@@ -1,37 +1,47 @@
 <script setup>
-
 import MyHeader from "@/components/myHeader.vue";
 import QuestionnaireList from "../components/QuestionnaireList.vue";
 import QuestionnaireResponseList from "@/components/QuestionnaireResponseList.vue";
-
-
 </script>
 
 <template>
   <div class="all">
     <my-header />
-    <QuestionnaireList />
-    <QuestionnaireResponseList />
-    Les FouFourmulaires
+    <div class="content">
+      <div class="section">
+        <QuestionnaireList />
+      </div>
+      <div class="section">
+        <QuestionnaireResponseList />
+      </div>
+    </div>
   </div>
-
 </template>
 
 <style scoped>
-.all{
-  position: absolute;
-  left: 1%;
-  /* border: orange 1px solid; */
+.all {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10vh; /* faire mieux !*/
-}
-span{
-  color: #004a6c;
-  font-weight: bold;
-  font-size: 1.5em;
-
+  height: 100vh; 
+  overflow-y: auto; 
+  box-sizing: border-box;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%; 
+  flex-grow: 1; 
+  margin-top: 10vh; 
+}
+
+.section {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  max-width: 1200px;
+  width: 100%;
+}
 </style>
