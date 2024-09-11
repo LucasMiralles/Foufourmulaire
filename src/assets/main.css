@@ -22,11 +22,14 @@ a,
 @media (min-width: 1024px) {
   body {
     display: flex;
-    place-items: center;
+    justify-content: center;
+    align-items: center;   
+    min-height: 100vh;    
+    margin: 0;
   }
 
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: block;
+    width: 100%;
   }
 }
