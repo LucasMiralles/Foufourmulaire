@@ -185,9 +185,9 @@ function getInputType(type) {
   // Détermine le type d'input en fonction du type de question
   switch (type) {
     case 'date':
-      return 'date';
+      return 'string';
     case 'integer':
-      return 'number';
+      return 'string';
     case 'string':
     default:
       return 'text';
