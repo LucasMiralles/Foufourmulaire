@@ -86,6 +86,7 @@ function getAllQuestionnaire() {
   fetch(url + "Questionnaire/", fetchOptions)
     .then(response => response.json())
     .then(dataJSON => {
+      console.log(dataJSON);
       if (Array.isArray(dataJSON)) {
         newQuestionnaire.splice(0, newQuestionnaire.length);
         dataJSON.forEach(questionnaireData => {

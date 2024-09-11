@@ -10,9 +10,12 @@ import hematoImg from '@/assets/img/hematologie.png';
 import rhumatoImg from '@/assets/img/rhumatologie.png';
 import orlImg from '@/assets/img/oreille.png';
 import annulerImg from '@/assets/img/annuler.png';
-
+import { onMounted, ref } from 'vue';
+import { url } from '../api.js';
 const props = defineProps(["name", "date"]);
 const router = useRouter();
+
+let QuestionnaireName = ref("");
 
 const imageMap = {
   cardio: cardioImg,
@@ -35,14 +38,34 @@ const getServiceImage = (name) => {
   }
   return annulerImg;
 };
+//get the title of the ressource Questionnaire with props.name
 
-
+function getQuestionnaireName() {
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  const fetchOptions = {
+    method: "GET",
+    headers: headers
+  };
+  
+  fetch(url + props.name , fetchOptions)
+    .then(response => response.json())
+    .then(dataJSON => {
+       QuestionnaireName.value = dataJSON.name;
+       console.log(QuestionnaireName);
+       
+    })
+    .catch(error => console.log(error));
+}
+onMounted(() => {
+  getQuestionnaireName();
+});
 </script>
 
 <template>
   <div class="card">
     <img :src="getServiceImage(props.name)" alt="Service image" class="service-image" />
-    <p class="card-title">{{ props.name }}</p>
+    <p class="card-title">{{ QuestionnaireName }}</p>
     <p class="response-date">Répondu le : {{ props.date }}</p>
   </div>
 </template>
