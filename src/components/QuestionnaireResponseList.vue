@@ -34,14 +34,15 @@ function getAllQuestionnaire() {
         const elementName = element.questionnaire;
         const status = element.status;
         const subject =  element.subject.reference;
+        const date = element.authored
         console.log(elementName, status, subject);
 
         if (subject === "Patient/"+localStorage.getItem('patientId')) {
           if (status === 'completed') {
-          completedQuestionnaireResponse.push({element: elementName, status: status, subject: subject});
+          completedQuestionnaireResponse.push({element: elementName, status: status, subject: subject, date: date});
         } 
           if (status === 'in-progress') {
-          waitingQuestionnaireResponse.push({element: elementName, status: status, subject: subject});
+          waitingQuestionnaireResponse.push({element: elementName, status: status, subject: subject, date: date});
         }
         }
         
@@ -75,6 +76,7 @@ onMounted(() => {
           v-for="questionnaire in waitingQuestionnaireResponse"
           :key="questionnaire.element"
           :name="questionnaire.element"
+          :date="questionnaire.date"
         />
       </div>
     </div>
@@ -84,6 +86,7 @@ onMounted(() => {
           v-for="questionnaire in completedQuestionnaireResponse"
           :key="questionnaire.element"
           :name="questionnaire.element"
+          :date="questionnaire.date"
         />
       </div>
     </div> 

@@ -10,7 +10,7 @@ import hematoImg from '@/assets/img/hematologie.png';
 import rhumatoImg from '@/assets/img/rhumatologie.png';
 import orlImg from '@/assets/img/oreille.png';
 
-const props = defineProps(["name"]);
+const props = defineProps(["name", "date"]);
 const router = useRouter();
 
 const imageMap = {
@@ -42,6 +42,7 @@ const getServiceImage = (name) => {
   <div class="card">
     <img :src="getServiceImage(props.name)" alt="Service image" class="service-image" />
     <p class="card-title">{{ props.name }}</p>
+    <p>Répondu le : {{ props.date }}</p>
   </div>
 </template>
 
