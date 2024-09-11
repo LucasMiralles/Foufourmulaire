@@ -1,3 +1,21 @@
+<template>
+  <div class="page-container">
+    <div class="container">
+      <h1 v-if="thisQuestionnaire">{{ thisQuestionnaire.title }}</h1>
+      <p v-if="thisQuestionnaire" class="description">{{ thisQuestionnaire.description }}</p>
+      <form @submit.prevent="submitAnswers">
+        <div v-if="allTexts.length > 0" class="text-list">
+          <div v-for="item in allTexts" :key="item.linkId" :class="{'section-title': !item.linkId.includes('.'), 'question': item.linkId.includes('.')}">
+            <p>{{ item.text }}</p>
+            <input v-if="item.linkId.includes('.')" v-model="answers[item.linkId]" :type="getInputType(item.type)" />
+          </div>
+        </div>
+        <button type="submit">Valider</button>
+      </form>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
@@ -7,7 +25,7 @@ const route = useRoute();
 const id = route.params.id;
 const thisQuestionnaire = ref(null);
 const allTexts = ref([]);
-const answers = ref({});  // Réponses de l'utilisateur
+const answers = ref({}); 
 
 class QuestionnaireItemDTO {
   constructor(linkId, text, type, item, enableWhen, enableBehavior, disabledDisplay, required, repeats, readOnly, maxLength, answerConstraint, answerValueSet, answerOption, initial) {
@@ -134,7 +152,7 @@ function initializeAnswers(items) {
     if (item.item) {
       initializeAnswers(item.item);
     }
-    answers.value[item.linkId] = ''; // Initialiser chaque réponse vide
+    answers.value[item.linkId] = '';
   });
 }
 
@@ -149,8 +167,7 @@ function submitAnswers() {
       "reference": "Patient/"+ localStorage.getItem('patientId'),
       "display": localStorage.getItem('name')
     },
-    "authored": new Date().toISOString().split('T')[0], //format YYYY-MM-DD 
-
+    "authored": new Date().toISOString().split('T')[0],
     "author": {
       "reference": localStorage.getItem('generalPractitioner'),
       "display": "Dr"
@@ -182,7 +199,6 @@ function mapAnswersToItems(items) {
 }
 
 function getInputType(type) {
-  // Détermine le type d'input en fonction du type de question
   switch (type) {
     case 'date':
       return 'string';
@@ -194,29 +210,127 @@ function getInputType(type) {
   }
 }
 
+function isQuestion(item) {
+  return item.text && item.type; 
+}
+
 onMounted(() => {
   getThisQuestionnaire();
 });
 </script>
 
-<template>
-  <div class="container">
-    <h1 v-if="thisQuestionnaire">{{ thisQuestionnaire.title }}</h1>
-    <p v-if="thisQuestionnaire" class="description">{{ thisQuestionnaire.description }}</p>
-    <form @submit.prevent="submitAnswers">
-      <div v-if="allTexts.length > 0" class="text-list">
-        <div v-for="item in allTexts" :key="item.linkId" class="question">
-          <p>{{ item.text }}</p>
-          <input v-model="answers[item.linkId]" :type="getInputType(item.type)" />
-        </div>
-      </div>
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-</template>
-
 <style scoped>
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f4f8; 
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  background-color: #f7f9fc;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin-top: 50px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3A5199;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.description {
+  font-size: 1.2rem;
+  color: #6b7280;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.text-list {
+  margin-bottom: 40px;
+}
+
 .question {
   margin-bottom: 20px;
+}
+
+.question p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-size: 24px; 
+  font-weight: bold;
+  color: #3A5199;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #3A5199; 
+  padding-bottom: 5px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="string"],
+input[type="integer"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+input:focus {
+  border-color: #3A5199;
+  box-shadow: 0 4px 8px rgba(58, 81, 153, 0.2);
+}
+
+button[type="submit"] {
+  width: auto; 
+  max-width: 200px; 
+  padding: 14px 20px;
+  background-color: #3A5199;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  display: block; 
+  margin: 0 auto;
+}
+
+button[type="submit"]:hover {
+  background-color: #2b3b73;
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+  background-color: #3A5199;
+  transform: translateY(1px);
+}
+
+button[type="submit"]:focus {
+  outline: 2px solid #3A5199;
+  outline-offset: 2px;
 }
 </style>
