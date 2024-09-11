@@ -2,16 +2,16 @@
 
 import MyHeader from "@/components/myHeader.vue";
 import QuestionnaireList from "../components/QuestionnaireList.vue";
+import QuestionnaireResponseList from "@/components/QuestionnaireResponseList.vue";
 
-function logout() {
-  localStorage.removeItem('jwt');
-}
+
 </script>
 
 <template>
   <div class="all">
     <my-header />
     <QuestionnaireList />
+    <QuestionnaireResponseList />
     Les FouFourmulaires
   </div>
 
