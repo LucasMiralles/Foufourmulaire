@@ -141,27 +141,29 @@ function initializeAnswers(items) {
 function submitAnswers() {
   const questionnaireResponse = 
   {
-    resourceType: "QuestionnaireResponse",
-    id: `response-${id}-`+ localStorage.getItem('patientId'),
-    questionnaire: `${url}Questionnaire/${id}`,
-    status: "completed",
-    subject: {
-      reference: "Patient/"+ localStorage.getItem('patientId'),
-      display: localStorage.getItem('name')
+    "resourceType": "QuestionnaireResponse",
+    "id": `response-${id}-`+ localStorage.getItem('patientId'),
+    "questionnaire": "Questionnaire/"+id,
+    "status": "in-progress",
+    "subject": {
+      "reference": "Patient/"+ localStorage.getItem('patientId'),
+      "display": localStorage.getItem('name')
     },
-    authored: new Date().toISOString(),
-    author: {
-      reference: localStorage.getItem('generalPractitioner'),
-      display: "Dr"
+    "authored": new Date().toISOString().split('T')[0], //format YYYY-MM-DD 
+
+    "author": {
+      "reference": localStorage.getItem('generalPractitioner'),
+      "display": "Dr"
     },
-    item: mapAnswersToItems(thisQuestionnaire.value.item)
+    "item": mapAnswersToItems(thisQuestionnaire.value.item)
   };
   console.log('Réponse à envoyer:', questionnaireResponse);
+  console.log(JSON.stringify(questionnaireResponse))
 
-  fetch(`${url}questionnaire-response/${questionnaireResponse.id}`, {
+  fetch(url+"questionnaire-response/"+questionnaireResponse.id, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/fhir+json'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(questionnaireResponse)
   })
