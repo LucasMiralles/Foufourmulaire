@@ -3,8 +3,6 @@ import {onMounted, reactive, ref} from "vue";
 import {url, urlToken, audience} from "../api.js"
 import QuestionnaireResponseCard from "@/components/QuestionnaireResponseCard.vue";
 
-// const props = defineProps(["consumer", "useCase", "delete"]);
-
 const waitingQuestionnaireResponse = reactive([]);
 const completedQuestionnaireResponse = reactive([]);
 
@@ -40,8 +38,6 @@ function getAllQuestionnaire() {
         }
         
       });
-      
-      
           
        console.log("waitingQuestionnaireResponse"); 
       console.log(waitingQuestionnaireResponse);
@@ -51,16 +47,14 @@ function getAllQuestionnaire() {
     .catch(error => console.log(error));
 }
 
-  
-//on mounted
-onMounted(() => {
+  onMounted(() => {
   getAllQuestionnaire();
 });
 </script>
 
 <template>
   <div class="fixed-container">
-    <h2 class="container-title">Questionnaires en attente de validation</h2>
+    <h2 class="container-title">Foufourmulaire(s) en attente de validation</h2>
     <div class="card-container">
       <QuestionnaireResponseCard
         v-for="questionnaire in waitingQuestionnaireResponse"
@@ -68,9 +62,11 @@ onMounted(() => {
         :name="questionnaire.element"
         :date="questionnaire.date"
       />
+      <!-- si waintingQuestionnaireResponse vie alors affiche "Pas de Foufourmulaires en attente" -->
+      <div v-if="waitingQuestionnaireResponse.length === 0">Pas de Foufourmulaire(s) en attente</div>
     </div>
 
-    <h2 class="container-title">Questionnaires validés</h2>
+    <h2 class="container-title">Foufourmulaire(s) validé(s)</h2>
     <div class="card-container">
       <QuestionnaireResponseCard
         v-for="questionnaire in completedQuestionnaireResponse"
@@ -78,6 +74,7 @@ onMounted(() => {
         :name="questionnaire.element"
         :date="questionnaire.date"
       />
+      <div v-if="completedQuestionnaireResponse.length === 0">Pas de Foufourmulaire(s) validé(s)</div>
     </div>
   </div>
 </template>

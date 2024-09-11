@@ -120,7 +120,7 @@ onMounted(() => {
 
 <template>
   <div class="fixed-container">
-    <h2 class="container-title">Questionnaires disponibles</h2>
+    <h2 class="container-title">Foufourmulaire(s) disponible(s)</h2>
     <div class="card-container">
       <QuestionnaireCard
         v-for="questionnaire in newQuestionnaire"
