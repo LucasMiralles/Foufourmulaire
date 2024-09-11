@@ -9,6 +9,7 @@ import gastroImg from '@/assets/img/gastro-enterologie.png';
 import hematoImg from '@/assets/img/hematologie.png';
 import rhumatoImg from '@/assets/img/rhumatologie.png';
 import orlImg from '@/assets/img/oreille.png';
+import annulerImg from '@/assets/img/annuler.png';
 
 const props = defineProps(["questionnaire"]);
 const router = useRouter();
@@ -32,7 +33,7 @@ const getServiceImage = (name) => {
       return imageMap[key];
     }
   }
-  return '/img/default.png';
+  return orlImg;
 };
 
 const handleCardClick = () => {
