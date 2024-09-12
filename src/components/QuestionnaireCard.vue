@@ -33,7 +33,7 @@ const getServiceImage = (name) => {
       return imageMap[key];
     }
   }
-  return orlImg;
+  return annulerImg;
 };
 
 const handleCardClick = () => {
